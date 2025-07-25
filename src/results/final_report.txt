@@ -55,16 +55,16 @@ Decision Tree Performance:
 
 Random Forest Performance:
 - Accuracy: 0.8108 (81.1%)
-- Training Time: 4.06 seconds
-- Prediction Time: 0.0091 seconds
+- Training Time: 3.99 seconds
+- Prediction Time: 0.0090 seconds
 - Precision (Disease): 0.7632
 - Recall (Disease Detection): 0.8529
 - F1-Score: 0.8111
 
 AdaBoost Performance:
 - Accuracy: 0.8378 (83.8%)
-- Training Time: 0.65 seconds
-- Prediction Time: 0.0005 seconds
+- Training Time: 0.76 seconds
+- Prediction Time: 0.0006 seconds
 - Precision (Disease): 0.8056
 - Recall (Disease Detection): 0.8529
 - F1-Score: 0.8381
