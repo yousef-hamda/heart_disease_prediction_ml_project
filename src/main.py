@@ -199,6 +199,11 @@ class HeartDiseasePredictionProject:
         self.feature_names = None
         self.results = {}                   # store all results for comparison
         
+        # إضافة متغيرات لحفظ أحجام البيانات
+        self.total_samples = 0
+        self.train_samples = 0
+        self.test_samples = 0
+        
         # Set random seed for reproducible results
         np.random.seed(random_seed)
         
@@ -218,6 +223,10 @@ class HeartDiseasePredictionProject:
             print("✅ Successfully loaded heart disease data!")
             X, y, clean_data = collector.clean_and_prepare_data(data)
             self.feature_names = X.columns.tolist() if isinstance(X, pd.DataFrame) else [f'feature_{i}' for i in range(X.shape[1])]
+            
+            # حفظ العدد الإجمالي للعينات
+            self.total_samples = len(X)
+            
             return X, y, clean_data
         else:
             print("❌ Data loading failed")
@@ -231,6 +240,9 @@ class HeartDiseasePredictionProject:
         print("\n" + "="*60)
         print("🏥 TRAINING ALL MODELS FOR HEART DISEASE PREDICTION")
         print("="*60)
+        
+        # حفظ عدد عينات التدريب
+        self.train_samples = len(X_train)
         
         # Normalize the features - crucial for medical data with different scales
         print("📏 Normalizing medical features...")
@@ -308,6 +320,9 @@ class HeartDiseasePredictionProject:
         print("\n" + "="*60)
         print("🔬 EVALUATING MODEL PERFORMANCE")
         print("="*60)
+        
+        # حفظ عدد عينات الاختبار
+        self.test_samples = len(X_test)
         
         # Scale test data using the same scaler as training
         X_test_scaled = self.scaler.transform(X_test)
@@ -481,12 +496,13 @@ class HeartDiseasePredictionProject:
         
         plt.tight_layout()
         
-        # Save the visualization
-        if not os.path.exists('results'):
-            os.makedirs('results')
+        # Save the visualization - المسار المُصحح
+        results_dir = os.path.join('..', 'results')
+        if not os.path.exists(results_dir):
+            os.makedirs(results_dir)
         
-        plt.savefig('results/model_comparison.png', dpi=300, bbox_inches='tight')
-        print("✅ Saved visualization to results/model_comparison.png")
+        plt.savefig(os.path.join(results_dir, 'model_comparison.png'), dpi=300, bbox_inches='tight')
+        print("✅ Saved visualization to ../results/model_comparison.png")
         
         # Show the plot and wait for user to close it
         plt.show(block=True)
@@ -575,8 +591,13 @@ class HeartDiseasePredictionProject:
                     ax.grid(True, alpha=0.3)
                     plt.tight_layout()
                     
-                    plt.savefig('results/feature_importance.png', dpi=300, bbox_inches='tight')
-                    print("\n✅ Saved feature importance plot to results/feature_importance.png")
+                    # Save plot - المسار المُصحح
+                    results_dir = os.path.join('..', 'results')
+                    if not os.path.exists(results_dir):
+                        os.makedirs(results_dir)
+                    
+                    plt.savefig(os.path.join(results_dir, 'feature_importance.png'), dpi=300, bbox_inches='tight')
+                    print("\n✅ Saved feature importance plot to ../results/feature_importance.png")
                     
                     plt.show(block=True)
                 else:
@@ -599,6 +620,9 @@ class HeartDiseasePredictionProject:
         print("\n" + "="*60)
         print("📝 GENERATING FINAL MEDICAL REPORT")
         print("="*60)
+        
+        # حساب العدد الصحيح للعينات
+        total_samples_info = f"{self.total_samples} patient records ({self.train_samples} training, {self.test_samples} testing)"
         
         report = f"""
 HEART DISEASE PREDICTION PROJECT
@@ -626,7 +650,7 @@ implementations, demonstrating deep understanding of the underlying mathematics.
 MEDICAL DATASET DETAILS:
 -----------------------
 - Data Type: Heart Disease UCI dataset (Cleveland Clinic)
-- Total Samples: {len(self.results[list(self.results.keys())[0]]['predictions'])} patient records
+- Total Samples: {total_samples_info}
 - Features: 13 medical indicators and clinical measurements
 - Target: Binary classification (heart disease=1, healthy=0)
 
@@ -821,7 +845,7 @@ This project was developed with assistance from Claude AI (Anthropic) for:
 - Medical terminology and clinical context guidance
 
 The core algorithmic implementations, mathematical understanding, and analytical 
-insights were developed independently by the student.
+insights were developed independently by me and only me .
 
 ---
 Total Development Time: Approximately 60+ hours over 4 weeks
@@ -836,14 +860,15 @@ Student ID: 324986116
 Course: Computational Learning (למידה חישובית)
 """
         
-        # Save the comprehensive report
-        if not os.path.exists('results'):
-            os.makedirs('results')
+        # Save the comprehensive report - المسار المُصحح
+        results_dir = os.path.join('..', 'results')
+        if not os.path.exists(results_dir):
+            os.makedirs(results_dir)
             
-        with open('results/final_report.txt', 'w', encoding='utf-8') as f:
+        with open(os.path.join(results_dir, 'final_report.txt'), 'w', encoding='utf-8') as f:
             f.write(report)
         
-        print("✅ Final medical report saved to results/final_report.txt")
+        print("✅ Final medical report saved to ../results/final_report.txt")
         return report
 
 def main():
@@ -853,7 +878,7 @@ def main():
     """
     print("💓 HEART DISEASE PREDICTION PROJECT")
     print("=" * 70)
-    print("Student Implementation of ML Algorithms for Medical Diagnosis")
+    print("yousef Implementation of ML Algorithms for Medical Diagnosis")
     print("Algorithms: Decision Tree, Random Forest, AdaBoost (all from scratch!)")
     print("=" * 70)
     
@@ -923,7 +948,7 @@ def main():
     print(f"🥇 Best Model: {best_model}")
     print(f"🎯 Best Accuracy: {best_accuracy:.4f} ({best_accuracy:.1%})")
     print(f"💓 Medical Application: Heart Disease Diagnosis")
-    print(f"📁 Results saved to: results/")
+    print(f"📁 Results saved to: ../results/")
     print(f"📊 Visualizations: model_comparison.png, feature_importance.png")
     print(f"📝 Report: final_report.txt")
     
