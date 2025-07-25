@@ -488,9 +488,8 @@ class HeartDiseasePredictionProject:
         plt.savefig('results/model_comparison.png', dpi=300, bbox_inches='tight')
         print("✅ Saved visualization to results/model_comparison.png")
         
-        # Show the plot
-        plt.show(block=False)
-        plt.pause(0.1)
+        # Show the plot and wait for user to close it
+        plt.show(block=True)
     
     def analyze_feature_importance(self, X_train, y_train):
         """
@@ -579,8 +578,7 @@ class HeartDiseasePredictionProject:
                     plt.savefig('results/feature_importance.png', dpi=300, bbox_inches='tight')
                     print("\n✅ Saved feature importance plot to results/feature_importance.png")
                     
-                    plt.show(block=False)
-                    plt.pause(0.1)
+                    plt.show(block=True)
                 else:
                     print("⚠️ No valid importance data to plot")
                 
